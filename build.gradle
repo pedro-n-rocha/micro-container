@@ -7,13 +7,13 @@ apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'com.bmuschko.docker-java-application'
 
-
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
+import com.bmuschko.gradle.docker.DockerJavaApplicationPlugin
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.DockerJavaApplication
        
-
 eclipse {
     classpath {
        downloadSources=true
@@ -42,37 +42,44 @@ dependencies {
  
 }
 
-
 jar {
     manifest {
         attributes 'Main-Class':"net.cortex.bootstrap.Main"
     }
 }
 
+task copyDist(type: Copy){
+ from 'build/distributions'
+ into 'build/docker/'
+} 
 
 
-task createDockerfile(type: Dockerfile) {
-    destFile = project.file('build/mydockerfile/Dockerfile')
+task createDockerfile(type: Dockerfile ) {
+
+    dependsOn distTar 
+    dependsOn copyDist
+     
+    destFile = project.file('build/docker/Dockerfile')
     from 'java:alpine'
-    //runCommand 'curl google.com'
-    //runCommand 'export http_proxy=http://194.65.37.122:80'
-    //runCommand 'export https_proxy=http://194.65.37.122:80'
-    //runCommand 'ping 194.65.37.122'
     runCommand 'export https_proxy=http://194.65.37.122:80 ; export http_proxy=http://194.65.37.122:80 ; apk --update add bash'
-   // runCommand 'route -n '
-   // runCommand 'ping  172.17.42.1'
+    addFile  'micro-container-1.0.tar' , '/'
+    entryPoint '/micro-container-1.0/bin/micro-container'
     maintainer 'Pedro Rocha'
 }
-
+  
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'rocha/tests'
+    tag = '10.112.84.201/main'
 }
 
-
-
-
+distributions {
+    main {
+        contents {
+            from shadowJar.outputs
+        }
+    }
+}
 
 docker {
    url = "tcp://10.112.84.201:2375"
@@ -80,8 +87,7 @@ docker {
     javaApplication {
         baseImage = 'java:alpine'
         maintainer = 'Pedro Rocha'
+        port = 0
         tag = '10.112.84.201/main'
-      
-        
     }
 }
