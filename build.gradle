@@ -1,0 +1,87 @@
+plugins {
+ id "com.github.johnrengelman.shadow" version "1.2.3"
+ id "com.bmuschko.docker-java-application" version "3.0.1"
+}
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'com.bmuschko.docker-java-application'
+
+
+import org.gradle.api.Project
+import org.gradle.api.plugins.ApplicationPlugin
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+       
+
+eclipse {
+    classpath {
+       downloadSources=true
+    }
+}
+
+group = "net.cortex"
+version = 1.0
+sourceCompatibility = 1.8
+
+repositories {
+	jcenter()
+    mavenCentral()
+}
+
+mainClassName = "net.cortex.bootstrap.Main"
+
+dependencies {
+ compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+ compile group: "org.cfg4j", name:"cfg4j-core", version: "4.4.0"
+ compile group: "org.cfg4j", name:"cfg4j-consul", version: "4.4.0"
+ // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+ compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+ // https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder
+ compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.7'
+ 
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class':"net.cortex.bootstrap.Main"
+    }
+}
+
+
+
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file('build/mydockerfile/Dockerfile')
+    from 'java:alpine'
+    //runCommand 'curl google.com'
+    //runCommand 'export http_proxy=http://194.65.37.122:80'
+    //runCommand 'export https_proxy=http://194.65.37.122:80'
+    //runCommand 'ping 194.65.37.122'
+    runCommand 'export https_proxy=http://194.65.37.122:80 ; export http_proxy=http://194.65.37.122:80 ; apk --update add bash'
+   // runCommand 'route -n '
+   // runCommand 'ping  172.17.42.1'
+    maintainer 'Pedro Rocha'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'rocha/tests'
+}
+
+
+
+
+
+docker {
+   url = "tcp://10.112.84.201:2375"
+    
+    javaApplication {
+        baseImage = 'java:alpine'
+        maintainer = 'Pedro Rocha'
+        tag = '10.112.84.201/main'
+      
+        
+    }
+}
