@@ -2,7 +2,6 @@ package net.cortex.bootstrap;
 
 import org.cfg4j.provider.ConfigurationProvider;
 import org.slf4j.Logger;
-
 import com.google.inject.*;
 import com.google.inject.name.Named;
 import net.cortex.configuration.ConfigurationModule.AppConfig;
@@ -13,19 +12,19 @@ public class Main {
 	@Inject
 	@Named("application.logo")
 	String logo;
-	
+
 	@Inject
 	@Named("application.version")
 	String version;
 
 	@Inject
 	ConfigurationProvider cfg;
-	
-	@Inject 
-	AppConfig appConfig; 
-	
+
+	@Inject
+	AppConfig appConfig;
+
 	@Log
-	Logger log; 
+	Logger log;
 
 	public static void main(String[] args) throws Exception {
 		Injector injector = Guice.createInjector(new Registry());
@@ -38,21 +37,6 @@ public class Main {
 				System.out.println("...::: app shutdown started :::...");
 			}
 		});
-			
-		log.info(" STARTED ") ; 
-		log.info(logo);
-		log.info(version);
-		log.info(appConfig.logo());
-		
-		
-		
-		//System.out.println(System.getenv("THINGWORX_PLATFORM_SETTINGS"));
-		
-		/*while(true){
-			
-			System.out.println(appConfig.version());
-			Thread.sleep(100);
-		} */
 
 	}
 

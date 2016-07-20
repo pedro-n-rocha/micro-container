@@ -35,11 +35,8 @@ dependencies {
  compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
  compile group: "org.cfg4j", name:"cfg4j-core", version: "4.4.0"
  compile group: "org.cfg4j", name:"cfg4j-consul", version: "4.4.0"
- // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
  compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
- // https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder
  compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.7'
- 
 }
 
 jar {
@@ -57,8 +54,7 @@ task copyDist(type: Copy){
 task createDockerfile(type: Dockerfile ) {
 
     dependsOn distTar 
-    dependsOn copyDist
-     
+    dependsOn copyDist 
     destFile = project.file('build/docker/Dockerfile')
     from 'java:alpine'
     runCommand 'export https_proxy=http://194.65.37.122:80 ; export http_proxy=http://194.65.37.122:80 ; apk --update add bash'
@@ -83,7 +79,6 @@ distributions {
 
 docker {
    url = "tcp://10.112.84.201:2375"
-    
     javaApplication {
         baseImage = 'java:alpine'
         maintainer = 'Pedro Rocha'
