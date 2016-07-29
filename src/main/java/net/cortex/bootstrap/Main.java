@@ -5,24 +5,25 @@ import org.slf4j.Logger;
 import com.google.inject.*;
 import com.google.inject.name.Named;
 import net.cortex.configuration.ConfigurationModule.AppConfig;
+import net.cortex.controllers.Controller;
 import net.cortex.logging.Log;
 
 public class Main {
 
-	@Inject
-	@Named("application.logo")
-	String logo;
+	//@Inject
+	//@Named("application.logo")
+	//String logo;
 
-	@Inject
-	@Named("application.version")
-	String version;
+	//@Inject
+	//@Named("application.version")
+	//String version;
 
-	@Inject
-	ConfigurationProvider cfg;
+	//@Inject
+	//ConfigurationProvider cfg;
 
-	@Inject
-	AppConfig appConfig;
-
+	@Inject Controller ctrl; 
+	
+	
 	@Log
 	Logger log;
 
@@ -37,7 +38,7 @@ public class Main {
 				System.out.println("...::: app shutdown started :::...");
 			}
 		});
-
+		ctrl.init();
 	}
 
 }
