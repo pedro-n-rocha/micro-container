@@ -15,6 +15,6 @@ public class Registry extends AbstractModule {
 		bindListener(Matchers.any(), new SLF4JTypeListener());
 		bind(Controller.class).to(BootController.class).asEagerSingleton();
 		bind(InjectedHandler.class);
-	//	install(new ConfigurationModule());
+		install(new ConfigurationModule());
 	}
 }

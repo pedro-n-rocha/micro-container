@@ -10,13 +10,13 @@ import net.cortex.logging.Log;
 
 public class Main {
 
-	//@Inject
-	//@Named("application.logo")
-	//String logo;
+	/*@Inject
+	@Named("application.logo")
+	String logo;
 
-	//@Inject
-	//@Named("application.version")
-	//String version;
+	@Inject
+	@Named("application.version")
+	String version;*/
 
 	//@Inject
 	//ConfigurationProvider cfg;

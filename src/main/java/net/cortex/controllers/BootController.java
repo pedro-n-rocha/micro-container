@@ -9,7 +9,7 @@ import ratpack.guice.Guice;
 import ratpack.handling.Context;
 import ratpack.handling.Handler;
 import ratpack.server.RatpackServer;
-import ratpack.server.ServerConfig;
+
 
 public class BootController implements Controller{
 	
@@ -26,7 +26,7 @@ public class BootController implements Controller{
 				// .serverConfig(ServerConfig.embedded())
 				 .registry(Guice.registry(inj))
 			     .handlers(chain -> chain
-			       .get(InjectedHandler.class)
+			       .get( "hello" , InjectedHandler.class)
 			       //.get(ctx -> ctx.render("Hello World!"))
 			       //.get(":name", ctx -> ctx.render("Hello " + ctx.getPathTokens().get("name") + "!"))     
 			     )
@@ -37,11 +37,9 @@ public class BootController implements Controller{
 	@Singleton
 	 public static class InjectedHandler implements Handler {
 	    //private final SomeService service;
-
 		
 		@Log Logger log ;
-		
-		
+				
 	    @Inject
 	    public InjectedHandler() {
 	      //this.service = service;
