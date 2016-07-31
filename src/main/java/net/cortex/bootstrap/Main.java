@@ -1,6 +1,7 @@
 package net.cortex.bootstrap;
 
 import org.cfg4j.provider.ConfigurationProvider;
+import org.jooq.DSLContext;
 import org.slf4j.Logger;
 import com.google.inject.*;
 import com.google.inject.name.Named;
@@ -25,6 +26,9 @@ public class Main {
 
 	@Log
 	Logger log;
+	
+	@Inject 
+	DSLContext dc ;
 
 	public static void main(String[] args) throws Exception {
 		Injector injector = Guice.createInjector(new Registry());
@@ -37,7 +41,8 @@ public class Main {
 				System.out.println("...::: app shutdown started :::...");
 			}
 		});
-
+		
+	
 	}
 
 }

@@ -31,9 +31,10 @@ public class DataSourceProvider implements Provider<DataSource> {
 	public DataSource get() {
 		   HikariConfig config = new HikariConfig();
 	        config.setDataSourceClassName(dataSourceClassName);
-	        config.addDataSourceProperty("databaseName", dbName);
-	        config.addDataSourceProperty("user", dbUser);
-	        config.addDataSourceProperty("password", dbPassword);
+	        config.addDataSourceProperty("URL", "jdbc:h2:~/test");
+	       // config.addDataSourceProperty("databaseName", dbName);
+	       // config.addDataSourceProperty("user", dbUser);
+	       // config.addDataSourceProperty("password", dbPassword);
 	        return new HikariDataSource(config);
 	}
 }

@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 import net.cortex.configuration.ConfigurationModule;
 import net.cortex.logging.SLF4JTypeListener;
+import net.cortex.persistence.PersistenceModule;
 
 public class Registry extends AbstractModule {
 
@@ -12,6 +13,7 @@ public class Registry extends AbstractModule {
 
 		bindListener(Matchers.any(), new SLF4JTypeListener());
 		install(new ConfigurationModule());
-
+		install(new PersistenceModule());
 	}
+	
 }

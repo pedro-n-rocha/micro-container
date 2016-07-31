@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	@Todo: 
+		configure this programmatically with consul defined properties
+		stash destination on consul KV 	
+ -->
+
+
 <configuration>
   <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
       <destination>logstash.smart2m.ptin.corppt.com:5000</destination>
       <!-- encoder is required -->
       <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
   </appender>
-  
+   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
 
   <root level="INFO">
       <appender-ref ref="STDOUT" /> 
